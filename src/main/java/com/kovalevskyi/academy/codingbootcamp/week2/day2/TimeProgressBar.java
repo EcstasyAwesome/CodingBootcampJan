@@ -31,7 +31,7 @@ public class TimeProgressBar {
     this.steps = steps;
     this.seconds = generateArrayOfRandomSecondsBy(seconds, this.steps);
     this.leftTime = Arrays.stream(this.seconds).sum();
-    this.progressBarPattern = "\r%3.0f%% [%-100s] %d/%d ETA: %tT";
+    this.progressBarPattern = "%3.0f%% [%-100s] %d/%d ETA: %tT";
     this.step = 0;
   }
 
@@ -45,7 +45,9 @@ public class TimeProgressBar {
     while (step < steps) {
       try {
         TimeUnit.SECONDS.sleep(seconds[step]);
-        stream.print(prepareString(LocalTime.ofSecondOfDay(leftTime -= seconds[step++])));
+        var bar = prepareString(LocalTime.ofSecondOfDay(leftTime -= seconds[step++]));
+        stream.print("\b".repeat(bar.length()));
+        stream.print(bar);
       } catch (InterruptedException exception) {
         exception.printStackTrace();
       }
