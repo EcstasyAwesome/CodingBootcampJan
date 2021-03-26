@@ -25,10 +25,13 @@ public class TimeProgressBar {
    * @param seconds time values
    */
   public TimeProgressBar(final int steps, final int[] seconds) {
+    if (steps < 1 || seconds.length == 0) {
+      throw new IllegalArgumentException("Error in progress bar initialization");
+    }
     this.steps = steps;
     this.seconds = generateArrayOfRandomSecondsBy(seconds, this.steps);
     this.leftTime = Arrays.stream(this.seconds).sum();
-    this.progressBarPattern = "\r %3.0f%% [%-100s] %d/%d ETA: %tT";
+    this.progressBarPattern = "\r%3.0f%% [%-100s] %d/%d ETA: %tT";
     this.step = 0;
   }
 
